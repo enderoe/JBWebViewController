@@ -174,7 +174,12 @@
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
     
     // Using modalViewController completion void
-    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:navigationController animated:YES completion:^{
+    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    while (topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+
+    [topController presentViewController:navigationController animated:YES completion:^{
         // Send completion callback
         if (completion) {
             completion(self);
